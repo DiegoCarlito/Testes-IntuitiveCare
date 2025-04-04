@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "db9abe47-c899-4f97-9581-09dee2332dec",
+		"name": "Operadoras Ativas - IntuitiveCare",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43765899",
+		"_collection_link": "https://diegocarlito.postman.co/workspace/Diego-Carlito's-Workspace~bc11e752-26c0-4242-8055-2e86ebe496ed/collection/43765899-db9abe47-c899-4f97-9581-09dee2332dec?action=share&source=collection_link&creator=43765899"
+	},
+	"item": [
+		{
+			"name": "amil",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/buscar?q=amil",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"buscar"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "amil"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bradesco",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/buscar?q=bradesco",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"buscar"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "bradesco"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
