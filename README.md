@@ -50,19 +50,146 @@ Desenvolver uma interface web utilizando Vue.js e um servidor em Python para rea
 3. Elaborar uma coleção no Postman para demonstrar o resultado.
 
 ## Tecnologias Utilizadas
-- **Python** / **Java** (para Web Scraping e Transformação de Dados)
+- **Python** (para Web Scraping e Transformação de Dados)
 - **MySQL 8+** / **PostgreSQL 10+** (para Banco de Dados)
 - **Vue.js** (para a interface web)
 - **Postman** (para testes de API)
 
 ## Como Executar
-1. Clone este repositório:
-   ```sh
-   git clone https://github.com/seu_usuario/Testes-IntuitiveCare.git
-   cd Testes-IntuitiveCare
-   ```
-2. Siga as instruções de cada diretório correspondente a cada teste para execução.
+
+### 1. Clone o repositório
+```bash
+git clone https://github.com/seu_usuario/Testes-IntuitiveCare.git
+cd Testes-IntuitiveCare
+```
+
+### 2. Configure o ambiente Python
+Crie e ative um ambiente virtual, e instale as dependências:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+---
+
+### 3. Teste 1 - Web Scraping
+
+Execute o script de scraping:
+```bash
+python3 web_scraping/scraping.py
+```
+Os arquivos PDF e o arquivo compactado `.zip` serão salvos na pasta `downloads/`.
+
+---
+
+### 4. Teste 2 - Transformação de Dados
+
+Antes de executar este teste, certifique-se de ter rodado o **Teste 1**, pois ele gera o PDF necessário.
+
+```bash
+python3 data_transformation/extract_table.py
+```
+
+O resultado será um arquivo CSV estruturado e compactado no formato `Teste_Diego_Carlito_Rodrigues_de_Souza.zip`, salvo na pasta `downloads/`.
+
+---
+
+### 5. Teste 3 - Banco de Dados
+
+#### Subindo o banco com Docker:
+```bash
+cd database
+docker-compose up --build
+```
+
+#### Populando as tabelas:
+```bash
+cd scripts
+python3 populate_operadoras.py
+python3 populate_despesas.py
+```
+
+#### Acessando o banco MySQL manualmente:
+```bash
+mysql -h 127.0.0.1 -P 3306 -u root -p
+```
+> **Senha:** `1234`
+
+#### Consultas analíticas:
+
+**Top 10 operadoras com maiores despesas no último trimestre (2024 Q4):**
+```sql
+SELECT 
+    oa.razao_social,
+    dc.registro_ans,
+    SUM(dc.vl_saldo_final) AS total_despesa
+FROM demonstracoes_contabeis dc
+JOIN operadoras_ativas oa ON dc.registro_ans = oa.registro_ans
+WHERE 
+    dc.descricao LIKE '%EVENTOS%SINISTROS%CONHECIDOS%HOSPITALAR%' AND
+    dc.data_registro BETWEEN '2024-10-01' AND '2024-12-31'
+GROUP BY dc.registro_ans, oa.razao_social
+ORDER BY total_despesa DESC
+LIMIT 10;
+```
+
+**Top 10 operadoras com maiores despesas no ano de 2023:**
+```sql
+SELECT 
+    oa.razao_social,
+    dc.registro_ans,
+    SUM(dc.vl_saldo_final - dc.vl_saldo_inicial) AS total_despesa
+FROM demonstracoes_contabeis dc
+JOIN operadoras_ativas oa ON dc.registro_ans = oa.registro_ans
+WHERE 
+    dc.descricao LIKE '%EVENTOS%SINISTROS%CONHECIDOS%HOSPITALAR%' AND
+    dc.data_registro BETWEEN '2023-01-01' AND '2023-12-31'
+GROUP BY dc.registro_ans, oa.razao_social
+ORDER BY total_despesa DESC
+LIMIT 10;
+```
+
+Perfeito! Aqui está o **passo 6** com as observações adicionais que você pediu, incluindo a dependência do passo 3 (banco de dados) e como rodar o frontend:
+
+---
+
+### 6. Teste 4 - API
+
+> ⚠️ **Pré-requisito:** Certifique-se de ter executado o **Teste 3** para que as tabelas do banco estejam populadas com os dados corretos.
+
+#### Subindo o servidor FastAPI:
+```bash
+uvicorn api.server:app --reload
+```
+
+> A API estará disponível em: `http://127.0.0.1:8000`
+
+#### Testando com o Postman:
+1. Abra o Postman.
+2. Clique em **Import** e selecione o arquivo `api/postman_collection.json`.
+3. Vá até a aba **Collections** e clique na coleção importada.
+4. Execute a requisição **amil** (`GET localhost:8000/api/buscar?q=amil`).
+5. Você verá os dados retornados da API.
+
+> Dica: altere o parâmetro `query` na URL para testar outras operadoras, como `unimed`, `bradesco`, etc.
+
+#### Rodando o frontend (Vue.js):
+```bash
+cd frontend
+npm install
+npm run serve
+```
+
+> A interface web estará disponível em: `http://localhost:8080`
 
 ## Contato
 Para mais informações, entre em contato pelo e-mail: `diego.carlito01@gmail.com`.
 
+<hr>
+<div style="text-align: center; margin-top: 40px;">
+  <img src="https://github.com/DiegoCarlito.png" 
+       alt="Foto de Diego Carlito" 
+       style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
+  <p style="margin-top: 10px; font-weight: bold;">Diego Carlito Rodrigues de Souza</p>
+</div>
