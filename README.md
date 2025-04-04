@@ -150,8 +150,6 @@ ORDER BY total_despesa DESC
 LIMIT 10;
 ```
 
-Perfeito! Aqui está o **passo 6** com as observações adicionais que você pediu, incluindo a dependência do passo 3 (banco de dados) e como rodar o frontend:
-
 ---
 
 ### 6. Teste 4 - API
