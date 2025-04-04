@@ -6,9 +6,14 @@
 
     <div v-if="operadoras.length" class="result-box">
       <ul>
-        <li v-for="operadora in operadoras" :key="operadora.registro_ans">
+        <li v-for="operadora in operadoras" :key="operadora.registro_ans" class="operadora-card">
           <p><strong>{{ operadora.nome_fantasia }}</strong></p>
-          <p>{{ operadora.razao_social }}</p>
+          <p><strong>Razão Social:</strong> {{ operadora.razao_social }}</p>
+          <p><strong>Registro ANS:</strong> {{ operadora.registro_ans }}</p>
+          <p><strong>CNPJ:</strong> {{ operadora.cnpj }}</p>
+          <p><strong>Representante:</strong> {{ operadora.representante }}</p>
+          <p><strong>Data de Registro:</strong> {{ operadora.data_registro }}</p>
+          <p><strong>Email:</strong> {{ operadora.endereco_eletronico }}</p>
         </li>
       </ul>
     </div>
