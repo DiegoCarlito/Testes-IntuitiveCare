@@ -183,6 +183,9 @@ npm run serve
 
 > A interface web estará disponível em: `http://localhost:8080`
 
+
+<div align="center"> <img src="image/front.png" height="auto" width="auto"/> </div>
+
 ## Contato
 Para mais informações, entre em contato pelo e-mail: `diego.carlito01@gmail.com`.
 
@@ -191,5 +194,4 @@ Para mais informações, entre em contato pelo e-mail: `diego.carlito01@gmail.co
   <img src="https://github.com/DiegoCarlito.png" 
        alt="Foto de Diego Carlito" 
        style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
-  <p style="margin-top: 10px; font-weight: bold;">Diego Carlito Rodrigues de Souza</p>
 </div>
