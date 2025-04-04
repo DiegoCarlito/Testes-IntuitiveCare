@@ -10,17 +10,26 @@ conn = mysql.connector.connect(
 cursor = conn.cursor()
 
 df = pd.read_csv("../data/Relatorio_cadop.csv", delimiter=";", encoding="utf-8")
-df = df.fillna("")  # Substitui valores NaN por strings vazias
+df = df.replace({pd.NA: None, pd.NaT: None, float('nan'): None})
 
-# Query para inserir os dados
-sql = """INSERT INTO operadoras_ativas (registro_ans, cnpj, razao_social, nome_fantasia, modalidade, logradouro,
-          numero, complemento, bairro, cidade, uf, cep, ddd, telefone, fax, endereco_eletronico,
-          representante, cargo_representante, regiao_comercializacao, data_registro)
-         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+# Preencher valores vazios com None para colunas numéricas
+df["Regiao_de_Comercializacao"] = df["Regiao_de_Comercializacao"].replace("", None)
+df["Data_Registro_ANS"] = pd.to_datetime(df["Data_Registro_ANS"], errors="coerce").dt.date
 
-# Inserir em lote para melhor performance
-cursor.executemany(sql, [tuple(map(str, row)) for _, row in df.iterrows()])
+# Substitui NaN por None no geral
+df = df.where(pd.notnull(df), None)
+
+sql = """INSERT INTO operadoras_ativas 
+    (registro_ans, cnpj, razao_social, nome_fantasia, modalidade, logradouro,
+     numero, complemento, bairro, cidade, uf, cep, ddd, telefone, fax, 
+     endereco_eletronico, representante, cargo_representante, 
+     regiao_comercializacao, data_registro)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+
+# Inserir no banco
+for _, row in df.iterrows():
+    cursor.execute(sql, tuple(row))
+
 conn.commit()
-
 cursor.close()
 conn.close()
