@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS ans_dados;
+USE ans_dados;
+
 CREATE TABLE IF NOT EXISTS operadoras_ativas (
     id_operadora INT PRIMARY KEY AUTO_INCREMENT,
     registro_ans INT UNIQUE,
