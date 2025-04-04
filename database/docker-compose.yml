@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mysql:
+    build: .
+    container_name: mysql_ans
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_DATABASE: "ans_dados"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts:/docker-entrypoint-initdb.d
+      - ./data:/data
+
+volumes:
+  mysql_data:
